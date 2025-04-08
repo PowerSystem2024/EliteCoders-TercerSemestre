@@ -117,4 +117,29 @@ let orden1 = new Orden();
 orden1.agregarComputadora(computadora1);
 orden1.mostrarOrden();
 
+let monitor2 = new Monitor('Samsung', '24 pulgadas');
+let teclado2 = new Teclado('USB', 'Corsair');
+let raton2 = new Raton('PS2', 'Genius');
+
+let computadora2 = new Computadora('Work', monitor2, teclado2, raton2);
+
+let orden2 = new Orden();
+orden2.agregarComputadora(computadora2);
+orden2.mostrarOrden();
+
+let monitor3 = new Monitor('Asus', '55 pulgadas');
+let teclado3 = new Teclado('USB', 'Razer');
+let raton3 = new Raton('USB', 'Redragon');
+
+let computadora3 = new Computadora('Gamer', monitor3, teclado3, raton3);
+
+let orden3 = new Orden();
+orden3.agregarComputadora(computadora3);
+orden3.mostrarOrden();
+
+let computadora4 = new Computadora('Gamer', monitor1, teclado2, raton3);
+
+let orden4 = new Orden();
+orden4.agregarComputadora(computadora4);
+orden4.mostrarOrden();
   
