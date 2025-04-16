@@ -1,5 +1,5 @@
 #Prevenir errores
-from NumerosIgualesException import NumerosIgualesException
+from Python.Leccion01.NumerosIgualesException import NumerosIgualesException
 resultado = None
 
 try:
