@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, papel o tijeras</title>
+    <script>
+        
+        <!-- Creo en una funcion con un parametro maximo y minimo a asignar y devuelve un numero random-->
+        function numeroRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+          
+        
+        function esGanador(entradaUsuario, pc) {
+            const combinacionesParaGanar = new Map([
+                [1, 3],
+                [2, 1],
+                [3, 2]
+            ]);
+            return combinacionesParaGanar.get(entradaUsuario) === pc;
+        }
+
+        let jugador = 0;
+        let max = 3;
+        let min = 1;
+        let pc = numeroRandom(min, max);
+
+        jugador = Number(prompt("Elige: 1 para piedra, 2 para papel, 3 para tijeras"));
+
+        switch (jugador) {
+            case 1:
+                alert("Elegiste piedra");
+                break;
+            case 2:
+                alert("Elegiste papel");
+                break;
+            case 3:
+                alert("Elegiste tijeras");
+                break;
+            default:
+                alert("Elegiste perder");
+        }
+
+        if (pc === jugador) {
+            alert("¡Empate!");
+        } else if (esGanador(jugador, pc)) {
+            alert("GANASTE!");
+        } else {
+            alert("PERDISTE!");
+        }
+        console.log("nro pc " + pc);
+    </script>
+</head>
+
+<body>
+    <h1>Juego de Piedra, Papel o Tijeras</h1>
+</body>
+
+</html>
+
