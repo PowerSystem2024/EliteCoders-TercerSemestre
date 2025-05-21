@@ -6,30 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LA LEYENDA DE AANG: AVATAR</title>
     <link rel="stylesheet" href="../styles/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <h1>AVATAR 🔥 💧 🌱 🌪️</h1>
 
-    <section id="seleccionar-personaje">
+    <section id="seleccionar-personaje" class="container">
         <h2>Elige tu Personaje</h2>
+        
+        <div>
+            <input type="radio" name="personaje" id="zuko" value="zuko"/>
+            <label for="zuko">Zuko</label>
+    
+            <input type="radio" name="personaje" id="katara" value="katara"/>
+            <label for="katara">Katara</label>
+    
+            <input type="radio" name="personaje" id="aang" value="aang"/>
+            <label for="aang">Aang</label>
+    
+            <input type="radio" name="personaje" id="toph" value="toph"/>
+            <label for="toph">Toph</label>
+        </div>
 
-        <input type="radio" name="personaje" id="zuko" value="zuko"/>
-        <label for="zuko">Zuko</label>
-
-        <input type="radio" name="personaje" id="katara" value="katara"/>
-        <label for="katara">Katara</label>
-
-        <input type="radio" name="personaje" id="aang" value="aang"/>
-        <label for="aang">Aang</label>
-
-        <input type="radio" name="personaje" id="toph" value="toph"/>
-        <label for="toph">Toph</label>
 
         <button id="boton-personaje"> Seleccionar</button>
     </section>
 
-    <section id="seleccionar-ataque">
+    <section id="seleccionar-ataque" class="container">
         <h2>Elige tu ataque</h2>
         <p>Tu personaje tiene<span> 3</span> vidas</p>
         <p>Los personajes del enemigo tienen<span> 3</span> vidas</p>
