@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Torres de Hanoi</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="input">
+    <h2>Torres de Hanoi</h2>
+    <input type="number" id="nInput" placeholder="Cantidad de discos" min="2" />
+    <button onclick="resolverTorresDeHanoi()">Iniciar</button>
+  </div>
+
+  <div id="torres">
+    <div id="A" class="torre"></div>
+    <div id="B" class="torre"></div>
+    <div id="C" class="torre"></div>
+  </div>
+
+  <script src="torresDeHanoi.js"></script>
+</body>
+
+</html>
