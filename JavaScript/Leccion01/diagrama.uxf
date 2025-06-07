@@ -1,0 +1,65 @@
+<diagram program="umletino" version="15.1"><zoom_level>8</zoom_level><help_text></help_text><element><id>UMLClass</id><coordinates><x>0</x><y>104</y><w>168</w><h>200</h></coordinates><panel_attributes>«Computadora»
+--
+idComputadora: number
+nombre: string
+monitor: Monitor
+teclado: Teclado
+raton: Raton
+contadorComputadoras: number
+--
+toString(): string
+--
+Responsabilidades:
+--Crear objetos de tipo Monitor
+&lt;@agg&gt; Monitor
+&lt;@agg&gt; Teclado
+&lt;@agg&gt; Raton</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>384</y><w>168</w><h>152</h></coordinates><panel_attributes>«Monitor»
+--
+idMonitor: number
+marca: string
+tamaño: string
+contadorMonitores: number
+--
+agregar el método get solo idMonitor
+toString()
+--
+Responsabilidades:
+--Crear objetos de tipo Monitor</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>376</x><y>200</y><w>168</w><h>152</h></coordinates><panel_attributes>«DispositivoEntrada»
+--
+tipoEntrada: string
+marca: string
+--
+(agregar los métodos get/set de cada atributo)
+--
+Responsabilidades:
+--Crear objetos de tipo DispositivoEntrada</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>256</x><y>416</y><w>168</w><h>112</h></coordinates><panel_attributes>«Raton»
+--
+idRaton: number
+contadorRatones: number
+--
+toString()
+--
+Responsabilidades:
+--Crear objetos de tipo Raton
+&lt;@gen&gt; DispositivoEntrada</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>496</x><y>416</y><w>168</w><h>112</h></coordinates><panel_attributes>«Teclado»
+--
+idTeclado: number
+contadorTeclado: number
+--
+toString()
+--
+Responsabilidades:
+--Crear objetos de tipo Teclado
+&lt;@gen&gt; DispositivoEntrada</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>248</x><y>24</y><w>168</w><h>152</h></coordinates><panel_attributes>«Orden»
+--
+_idOrden: number
+_computadoras: Computadora[]
+contadorOrdenes: number
+--
+agregarComputadora(computadora)
+mostrarOrden()
+--
+Responsabilidades:
+--Crear objetos de tipo Orden
+--y almacenar un arreglo de objetos de tipo Computadora
+&lt;@agg&gt; Computadora</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>344</x><y>352</y><w>128</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>140;10;140;60;10;60;10;80</additional_attributes></element><element><id>Relation</id><coordinates><x>448</x><y>352</y><w>120</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60;130;60;130;80</additional_attributes></element><element><id>Relation</id><coordinates><x>96</x><y>296</y><w>512</w><h>280</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80;110;80;110;330;620;330;620;290</additional_attributes></element><element><id>Relation</id><coordinates><x>160</x><y>120</y><w>104</w><h>96</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>110;10;60;10;60;100;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>96</x><y>296</y><w>24</w><h>104</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>96</x><y>296</y><w>256</w><h>280</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80;110;80;110;330;300;330;300;290</additional_attributes></element></diagram>
