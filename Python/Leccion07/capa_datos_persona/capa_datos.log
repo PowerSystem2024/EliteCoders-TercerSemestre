@@ -3,3 +3,54 @@
 01:37:21 PM: WARNING [logger_base.py:16] Mensaje de warning
 01:37:21 PM: ERROR [logger_base.py:17] Mensaje de error
 01:37:21 PM: CRITICAL [logger_base.py:18] Mensaje de critical
+05:05:04 AM: DEBUG [Persona.py:53] 
+            id_persona: 1,
+            nombre: Juan,
+            apellido: Perez,
+            email: jperez@mail.com
+        
+05:05:21 AM: DEBUG [Persona.py:54] 
+            id_persona: 1,
+            nombre: Juan,
+            apellido: Perez,
+            email: jperez@mail.com
+        
+05:09:08 AM: DEBUG [Persona.py:54] 
+            id_persona: 1,
+            nombre: Juan,
+            apellido: Perez,
+            email: jperez@mail.com
+        
+05:09:08 AM: DEBUG [Persona.py:57] 
+            id_persona: None,
+            nombre: Jon,
+            apellido: Pez,
+            email: jrez@mail.com
+        
+05:15:22 AM: DEBUG [Persona.py:54] 
+            id_persona: 1,
+            nombre: Juan,
+            apellido: Perez,
+            email: jperez@mail.com
+        
+05:15:22 AM: DEBUG [Persona.py:57] 
+            id_persona: None,
+            nombre: Jon,
+            apellido: Pez,
+            email: jpez@mail.com
+        
+05:15:22 AM: DEBUG [Persona.py:60] 
+            id_persona: 1,
+            nombre: None,
+            apellido: None,
+            email: None
+        
+08:08:49 AM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x00000221AADACAE0; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+08:09:44 AM: ERROR [conexion.py:28] Error en la conexion: 'utf-8' codec can't decode byte 0xf3 in position 85: invalid continuation byte
+08:09:48 AM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x00000226E3E4CAE0; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+08:10:29 AM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x000002507F3FCAE0; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+08:10:29 AM: ERROR [conexion.py:41] Error en la cursor: type object 'Conexion' has no attribute '_obtenerConexion'
+08:13:20 AM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x000001C09893CAE0; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+08:13:20 AM: ERROR [conexion.py:41] Error en la cursor: type object 'Conexion' has no attribute '_obtenerConexion'
+08:14:06 AM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x0000020B8643CAE0; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+08:14:06 AM: DEBUG [conexion.py:38] Cursor con exito: <cursor object at 0x0000020B864D1FC0; closed: 0>
