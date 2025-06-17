@@ -33,27 +33,43 @@
 
 
         <button id="boton-personaje"> Seleccionar</button>
-        <p>Tu personaje <span id="personaje-jugador"></span> tiene<span> 3</span> vidas</p>
+        <p>Tu personaje <span id="personaje-jugador"></span> tiene <span> 3</span> vidas</p>
     </section>
 
     <section id="seleccionar-ataque" class="container">
         <h2>Elige tu ataque</h2>
         
-        
-        <p>El personaje <span id="personaje-enemigo"></span> del enemigo tienen<span> 3</span> vidas</p>
+        <!-- Desactive los botones, ya que generaban conflicto, tambien en js, hasta que se eliga un personaje -->
+        <p>El personaje <span id="personaje-enemigo"></span> del enemigo tienen <span> 3</span> vidas</p>
         <p>
-            <button id="boton-punio">Punio 🤜</button>
-            <button id="boton-patada">Patada 🦶</button>
-            <button id="boton-barrida">Barrida 🦵</button>
+            <button id="boton-punio" disabled>Puño 🤜</button>
+            <button id="boton-patada" disabled>Patada 🦶</button>
+            <button id="boton-barrida" disabled>Barrida 🦵</button>
+        </p>
+    </section>
+    <!-- Cambie el mensaje estatico, y puse mensajes dinamicos para que muestren cada evento, y un mensaje final -->
+    <section id="mensajes">
+        <p>
+            <span id="mensaje-jugador"></span>
+            <span id="mensaje-enemigo"></span>
+            <span id="mensaje-final"></span>
         </p>
     </section>
 
-    <section id="mensajes">
-        <p>Tu personaje ataco con todo el poder del FUEGO, el personaje del enemigo ataco con el medio poder de la
-            tierra- GANASTE!!</p>
-    </section>
     <section id="reiniciar">
         <button id="boton-reiniciar">Reiniciar </button>
+    </section>
+    <section id="reglas">
+        <button id="boton-reglas">Reglas del juego</button>
+        <p id="texto-reglas" class="oculto"> <!-- Agregue las reglas con una clase oculta, para que tengas que hacer click en el boton para verlas -->
+            Este es un juego de lucha por turnos entre dos personajes del universo de Avatar: La Leyenda de Aang. 
+            <br>
+            Cada personaje tiene 3 vidas. El juego termina cuando uno de los personajes pierde todas sus vidas.
+            <br>
+            - **Patada** 🦶 vence a **Puño** 🤜
+            - **Puño** 🤜 vence a **Barrida** 🦵
+            - **Barrida** 🦵 vence a **Patada** 🦶
+        </p>
     </section>
 
     <script src="../js/avatar.js"></script>
