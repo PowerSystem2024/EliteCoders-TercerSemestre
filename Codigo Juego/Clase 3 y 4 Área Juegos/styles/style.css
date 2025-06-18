@@ -2,6 +2,7 @@ html {
     height: 100%;
     font-family: "Lexend", sans-serif;
 }
+
 body {
     background-color: rgb(237, 237, 237);
     display: flex;
@@ -48,4 +49,15 @@ button {
 
 button:hover {
     background-color: #f0f0f0;
+}
+
+/* Estilo para ocultar el texto de las reglas del juego */
+.oculto {
+    display: none;
+}
+
+/* Estilo para botones deshabilitados */
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
 }
