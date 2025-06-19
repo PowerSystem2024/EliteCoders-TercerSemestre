@@ -4,10 +4,17 @@ let ataqueEnemigo;
 // para mejorar la logica
 let vidasJugador = 3;
 let vidasEnemigo = 3;
+let reglasVisibles = false;
 
 function iniciarJuego() {
     let botonPersonajeJugador = document.getElementById('boton-personaje');
     botonPersonajeJugador.addEventListener('click', seleccionarPersonajeJugador);
+
+    document.getElementById('reglas-del-juego').style.display = 'none';
+
+    document.getElementById('boton-reglas').addEventListener('click', mostrarReglas);
+    document.getElementById('boton-jugar').addEventListener('click', seleccionarPersonajeJugador);
+
     let botonPunio = document.getElementById("boton-punio");
     botonPunio.addEventListener('click', ataquePunio);
     let botonPatada = document.getElementById("boton-patada");
@@ -16,14 +23,21 @@ function iniciarJuego() {
     botonBarrida.addEventListener('click', ataqueBarrida);
     let botonReiniciar = document.getElementById('boton-reiniciar');
     botonReiniciar.addEventListener('click', reiniciarJuego);
-    let botonReglas = document.getElementById('boton-reglas');
-    botonReglas.addEventListener('click', function() {
-        const reglasTexto = document.getElementById('texto-reglas');
-        reglasTexto.classList.toggle('oculto');
-    });
+}
+
+function mostrarReglas() {
+    if (reglasVisibles) {
+        document.getElementById('reglas-del-juego').style.display = 'none';
+        reglasVisibles = false;
+    } else {
+        document.getElementById('reglas-del-juego').style.display = 'block';
+        reglasVisibles = true;
+    }
 }
 
 function seleccionarPersonajeJugador() {
+    document.getElementById('reglas-del-juego').style.display = 'none';
+
     let personajeSeleccionado = document.querySelector('input[name="personaje"]:checked')?.value;
     let spanPersonajeJugador = document.getElementById('personaje-jugador');
 
@@ -36,6 +50,8 @@ function seleccionarPersonajeJugador() {
     document.getElementById('mensajes').innerHTML = `<p>Seleccionaste al personaje ${personajeSeleccionado}</p>`;
     seleccionarPersonajeEnemigo();
     document.getElementById('boton-personaje').disabled = true;
+    document.getElementById('boton-jugar').disabled = true;
+    document.getElementById('boton-reiniciar').disabled = false;
     document.getElementById('boton-punio').disabled = false;
     document.getElementById('boton-patada').disabled = false;
     document.getElementById('boton-barrida').disabled = false;
@@ -78,8 +94,8 @@ function combatir() {
 
     // Actualizar el mensaje en el DOM
     document.getElementById('mensajes').innerHTML = `<p>${mensaje}</p>`;
-    document.querySelector('#seleccionar-personaje p span:last-child').innerHTML = vidasJugador;
-    document.querySelector('#seleccionar-ataque p span:last-child').innerHTML = vidasEnemigo;
+    document.getElementById('vidas-jugador').innerHTML = vidasJugador;
+    document.getElementById('vidas-enemigo').innerHTML = vidasEnemigo;
 
     // Actualizar las vidas del jugador y del enemigo
     if (vidasJugador <= 0 || vidasEnemigo <= 0) {
@@ -118,11 +134,12 @@ function reiniciarJuego() {
     vidasEnemigo = 3;
     document.getElementById('personaje-jugador').innerHTML = '';
     document.getElementById('personaje-enemigo').innerHTML = '';
-    document.querySelector('#seleccionar-personaje p span:last-child').innerHTML = '3';
-    document.querySelector('#seleccionar-ataque p span:last-child').innerHTML = '3';
+    document.getElementById('vidas-jugador').innerHTML = '3';
+    document.getElementById('vidas-enemigo').innerHTML = '3';
     document.getElementById('mensajes').innerHTML = '';
     document.querySelectorAll('input[name="personaje"]').forEach(input => input.checked = false);
     document.getElementById('boton-personaje').disabled = false;
+    document.getElementById('boton-jugar').disabled = false;
     deshabilitarBotonesAtaque();
 }
 
