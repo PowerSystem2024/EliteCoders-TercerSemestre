@@ -61,3 +61,21 @@ button:disabled {
     background-color: #ccc;
     cursor: not-allowed;
 }
+
+.primary-button {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+}
+
+.primary-button:hover {
+    background-color: #45a049; /* Verde más oscuro */
+}
+
+.secondary-button {
+    background-color: #3d5861; /* Azul */
+    color: white;
+}
+
+.secondary-button:hover {
+    background-color: #007B9E; /* Azul más oscuro */
+}
