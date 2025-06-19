@@ -12,6 +12,8 @@ function iniciarJuego() {
 
     document.getElementById('reglas-del-juego').style.display = 'none';
 
+    document.getElementById('seleccionar-ataque').style.display = 'none';
+    document.getElementById('boton-personaje').disabled = false;
     document.getElementById('boton-reglas').addEventListener('click', mostrarReglas);
     document.getElementById('boton-jugar').addEventListener('click', seleccionarPersonajeJugador);
 
@@ -55,6 +57,8 @@ function seleccionarPersonajeJugador() {
     document.getElementById('boton-punio').disabled = false;
     document.getElementById('boton-patada').disabled = false;
     document.getElementById('boton-barrida').disabled = false;
+    document.getElementById('seleccionar-ataque').style.display = '';
+    document.getElementById('seleccionar-personaje').style.display = 'none';
 }
 
 function seleccionarPersonajeEnemigo() {
@@ -130,6 +134,7 @@ function deshabilitarBotonesAtaque() {
 }
 
 function reiniciarJuego() {
+    location.reload();
     vidasJugador = 3;
     vidasEnemigo = 3;
     document.getElementById('personaje-jugador').innerHTML = '';
