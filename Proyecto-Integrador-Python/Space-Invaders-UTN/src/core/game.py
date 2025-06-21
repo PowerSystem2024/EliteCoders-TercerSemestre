@@ -1,11 +1,12 @@
 # src/core/game.py
 
 import pygame
-from entities.player import Player      # Clase del jugador
-from entities.enemy import Enemy        # Clase de enemigos
-from entities.bullet import Bullet      # Clase de disparos
-from systems.inventory import Inventory # Inventario para power-ups y mejoras
-from core.hud import draw_hud           # Función para dibujar la interfaz HUD
+
+from src.core.hud import draw_hud
+from src.entities.bullet import Bullet
+from src.entities.enemy import Enemy
+from src.entities.player import Player
+from src.systems.inventory import Inventory
 
 class Game:
     def __init__(self, screen):
