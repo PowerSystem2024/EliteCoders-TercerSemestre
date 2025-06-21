@@ -1,12 +1,13 @@
 import pygame
 import random
-from entities.bullet import Bullet
+
+from src.entities.bullet import Bullet
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, x, y, image, speed=2, health=4):
+    def __init__(self, x, y, speed=2, health=4):
         super().__init__()
-        self.image = pygame.transform.scale(image, (40, 40))
-        self.rect = self.image.get_rect(topleft=(x, y))
+        # Crea un rectángulo para representar al enemigo (x, y, ancho, alto)
+        self.rect = pygame.Rect(x, y, 40, 40)
         self.speed = speed
         self.health = health
         self.direction = 1  # 1: derecha, -1: izquierda
@@ -19,6 +20,10 @@ class Enemy(pygame.sprite.Sprite):
         if self.rect.right >= 800 or self.rect.left <= 0:
             self.direction *= -1
             self.rect.y += 10  # Bajar un poco
+
+    def draw(self, screen):
+        # Dibuja al enemigo como un rectángulo rojo
+        pygame.draw.rect(screen, (255, 0, 0), self.rect)
 
     def take_damage(self):
         self.health -= 1
