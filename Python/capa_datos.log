@@ -1,0 +1,10 @@
+09:21:45 PM: ERROR [conexion.py:42] Ocurrio un error al obtener el pool: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+09:22:20 PM: ERROR [conexion.py:43] Ocurrio un error al obtener el pool: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+09:23:53 PM: ERROR [conexion.py:43] Ocurrio un error al obtener el pool: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+09:24:08 PM: ERROR [conexion.py:43] Ocurrio un error al obtener el pool: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+
+09:26:02 PM: ERROR [conexion.py:41] Ocurrio un error al obtener el pool: connection to server at "localhost" (::1), port 5432 failed: FATAL:  password authentication failed for user "postgres"
+

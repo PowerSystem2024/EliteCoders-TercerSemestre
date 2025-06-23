@@ -54,3 +54,30 @@
 08:13:20 AM: ERROR [conexion.py:41] Error en la cursor: type object 'Conexion' has no attribute '_obtenerConexion'
 08:14:06 AM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x0000020B8643CAE0; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
 08:14:06 AM: DEBUG [conexion.py:38] Cursor con exito: <cursor object at 0x0000020B864D1FC0; closed: 0>
+05:52:55 PM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x000002482C050F20; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+05:52:55 PM: DEBUG [conexion.py:38] Cursor con exito: <cursor object at 0x000002482C0FE7A0; closed: 0>
+05:52:55 PM: DEBUG [persona_dao.py:38] Persona Insertada: 
+            id_persona: None,
+            nombre: Pepe,
+            apellido: González,
+            email: pepe@gmail.com
+        
+05:52:55 PM: DEBUG [persona_dao.py:74] Persona insertada: 1
+05:53:19 PM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x0000025731D20F20; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+05:53:19 PM: DEBUG [conexion.py:38] Cursor con exito: <cursor object at 0x0000025731DCE7A0; closed: 0>
+05:53:19 PM: DEBUG [persona_dao.py:47] Persona actualizada: 
+            id_persona: 1,
+            nombre: Juan,
+            apellido: Pérez,
+            email: nuevo@gmail.com
+        
+05:53:19 PM: DEBUG [persona_dao.py:69] Persona actualizada: 1
+05:53:37 PM: DEBUG [conexion.py:25] Conexion con exito: <connection object at 0x0000027146360F20; dsn: 'user=postgres password=xxx dbname=test_bd host=localhost port=5432', closed: 0>
+05:53:37 PM: DEBUG [conexion.py:38] Cursor con exito: <cursor object at 0x000002714640E7A0; closed: 0>
+05:53:37 PM: DEBUG [persona_dao.py:56] Persona eliminada: 
+            id_persona: 1,
+            nombre: None,
+            apellido: None,
+            email: None
+        
+05:53:37 PM: DEBUG [persona_dao.py:64] Persona eliminada: 1
