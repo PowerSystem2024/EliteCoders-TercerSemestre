@@ -14,3 +14,6 @@ class Bullet(pygame.sprite.Sprite):
         # Eliminar la bala si sale de pantalla
         if self.rect.bottom < 0 or self.rect.top > 600:
             self.kill()
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)

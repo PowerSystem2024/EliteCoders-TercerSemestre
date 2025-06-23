@@ -1,7 +1,7 @@
-
 import pygame
 from settings import *           # Importa constantes de configuración (pantalla, FPS, etc.)
 from core.game import Game      # Importa la clase principal del juego
+from core.hub import show_hub  # Importa la función del HUB
 
 def main():
     # Inicializa todos los módulos de Pygame
@@ -10,6 +10,11 @@ def main():
     # Crea la ventana del juego con tamaño definido en settings.py
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Space Invaders - UTN")
+
+    # Mostrar HUB antes de iniciar el juego
+    if not show_hub(screen):
+        pygame.quit()
+        return
 
     # Reloj para controlar los FPS
     clock = pygame.time.Clock()
