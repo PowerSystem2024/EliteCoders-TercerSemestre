@@ -11,6 +11,7 @@ class Enemy(pygame.sprite.Sprite):
         self.speed = speed
         self.health = health
         self.direction = 1  # 1: derecha, -1: izquierda
+        self.bounce_count = 0  # Cuenta los rebotes para saltos crecientes
 
     def update(self):
         # Movimiento horizontal
@@ -19,11 +20,20 @@ class Enemy(pygame.sprite.Sprite):
         # Cambio de dirección al llegar al borde de la pantalla
         if self.rect.right >= 800 or self.rect.left <= 0:
             self.direction *= -1
-            self.rect.y += 10  # Bajar un poco
+            self.bounce_count += 1
+            self.rect.y += 10 + 3 * self.bounce_count  # Salto más grande cada vez
 
     def draw(self, screen):
-        # Dibuja al enemigo como un rectángulo rojo
-        pygame.draw.rect(screen, (255, 0, 0), self.rect)
+        # Cambia el color según la vida
+        if self.health >= 4:
+            color = (255, 0, 0)  # Rojo
+        elif self.health == 3:
+            color = (255, 128, 0)  # Naranja
+        elif self.health == 2:
+            color = (255, 255, 0)  # Amarillo
+        else:
+            color = (255, 255, 255)  # Blanco
+        pygame.draw.rect(screen, color, self.rect)
 
     def take_damage(self):
         self.health -= 1
