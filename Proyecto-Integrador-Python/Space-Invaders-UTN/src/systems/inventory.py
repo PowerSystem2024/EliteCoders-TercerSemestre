@@ -1,10 +1,20 @@
 import sqlite3  # Módulo para conectarse a SQLite (viene con Python)
+import os  # Para manejar carpetas y rutas
 
 class Inventory:
-    def __init__(self, db_path='data/game_data.db'):  # Ruta de la base de datos
-        self.conn = sqlite3.connect(db_path)  # Conexión a la base
-        self.create_table()  # Crear tabla si no existe
+    def __init__(self, db_path='data/game_data.db'):
+        # Obtener la carpeta de la ruta (ejemplo: 'data')
+        folder = os.path.dirname(db_path)
+        
+        # Si la carpeta no existe, crearla para evitar errores al conectar SQLite
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        
+        # Ahora sí, conectar a la base de datos (se crea si no existe)
+        self.conn = sqlite3.connect(db_path)
 
+        # Crear tabla si no existe
+        self.create_table()
     def create_table(self):
         self.conn.execute('''
             CREATE TABLE IF NOT EXISTS inventory (

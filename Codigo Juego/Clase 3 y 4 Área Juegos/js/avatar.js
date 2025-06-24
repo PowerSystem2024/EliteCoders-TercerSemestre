@@ -1,10 +1,22 @@
-// Inicia el juego y espera que el jugador seleccione su personaje
 let ataqueJugador;
 let ataqueEnemigo;
+// Variables para las vidas del jugador y del enemigo, usadas como variables globales
+// para mejorar la logica
+let vidasJugador = 3;
+let vidasEnemigo = 3;
+let reglasVisibles = false;
 
-function  iniciarJuego(){
+function iniciarJuego() {
     let botonPersonajeJugador = document.getElementById('boton-personaje');
-    botonPersonajeJugador.addEventListener('click',seleccionarPersonajeJugador);
+    botonPersonajeJugador.addEventListener('click', seleccionarPersonajeJugador);
+
+    document.getElementById('reglas-del-juego').style.display = 'none';
+
+    document.getElementById('seleccionar-ataque').style.display = 'none';
+    document.getElementById('boton-personaje').disabled = false;
+    document.getElementById('boton-reglas').addEventListener('click', mostrarReglas);
+    document.getElementById('boton-jugar').addEventListener('click', seleccionarPersonajeJugador);
+
     let botonPunio = document.getElementById("boton-punio");
     botonPunio.addEventListener('click', ataquePunio);
     let botonPatada = document.getElementById("boton-patada");
@@ -15,88 +27,129 @@ function  iniciarJuego(){
     botonReiniciar.addEventListener('click', reiniciarJuego);
 }
 
-// El enemigo elige aleatoriamente uno de los cuatro personajes
+function mostrarReglas() {
+    if (reglasVisibles) {
+        document.getElementById('reglas-del-juego').style.display = 'none';
+        reglasVisibles = false;
+    } else {
+        document.getElementById('reglas-del-juego').style.display = 'block';
+        reglasVisibles = true;
+    }
+}
+
+function seleccionarPersonajeJugador() {
+    document.getElementById('reglas-del-juego').style.display = 'none';
+
+    let personajeSeleccionado = document.querySelector('input[name="personaje"]:checked')?.value;
+    let spanPersonajeJugador = document.getElementById('personaje-jugador');
+
+    if (!personajeSeleccionado) {
+        alert('Selecciona un personaje');
+        return;
+    }
+
+    spanPersonajeJugador.innerHTML = personajeSeleccionado;
+    document.getElementById('mensajes').innerHTML = `<p>Seleccionaste al personaje ${personajeSeleccionado}</p>`;
+    seleccionarPersonajeEnemigo();
+    document.getElementById('boton-personaje').disabled = true;
+    document.getElementById('boton-jugar').disabled = true;
+    document.getElementById('boton-reiniciar').disabled = false;
+    document.getElementById('boton-punio').disabled = false;
+    document.getElementById('boton-patada').disabled = false;
+    document.getElementById('boton-barrida').disabled = false;
+    document.getElementById('seleccionar-ataque').style.display = '';
+    document.getElementById('seleccionar-personaje').style.display = 'none';
+}
+
 function seleccionarPersonajeEnemigo() {
-    const personajes = ['zuko', 'katara', 'aang', 'toph'];
+    const personajes = ['Zuko', 'Katara', 'Aang', 'Toph'];
     const personajeAleatorio = personajes[Math.floor(Math.random() * personajes.length)];
     const spanPersonajeEnemigo = document.getElementById('personaje-enemigo');
     spanPersonajeEnemigo.innerHTML = personajeAleatorio;
-    alert(`El enemigo selecciono al personaje ${personajeAleatorio} tiene 3 vidas`);
+    document.getElementById('mensajes').innerHTML += `<p>El enemigo seleccionó al personaje ${personajeAleatorio}</p>`;
 }
 
-// Verifica qué personaje fue seleccionado por el jugador y muestra un mensaje
-function seleccionarPersonajeJugador(){
-    
-    let inputZuko = document.getElementById('zuko')
-    let inputKatara = document.getElementById('katara')
-    let inputAang = document.getElementById('aang')
-    let inputToph = document.getElementById('toph')
-    let spanPersonajeJugador = document.getElementById('personaje-jugador')
-
-   if(inputZuko.checked){
-    spanPersonajeJugador.innerHTML= 'zuko' 
-
-    }else if(inputKatara.checked){
-
-    spanPersonajeJugador.innerHTML='katara'
-    }else if(inputKatara.checked){
-
-    spanPersonajeJugador.innerHTML='aang'
-    }else if(inputKatara.checked){
-
-    spanPersonajeJugador.innerHTML='toph'
-    }else{
-    alert('Selecciona un personaje')
-    }
-
-    
-    
-    let personajeSeleccionado = document.querySelector('input[name="personaje"]:checked')?.value
-    if (!personajeSeleccionado) {
-        alert('No seleccionaste ningún personaje');
-        return;
-    }
-    alert(`Seleccionaste al personaje ${personajeSeleccionado}`);
-    // Mostrar mensaje con las 3 vidas del personaje jugador
-    alert(`Tu personaje ${personajeSeleccionado} tiene 3 vidas`);
-
-    // Mostrar el personaje que eligió el enemigo
-    seleccionarPersonajeEnemigo();    
-}
-
-function ataqueAleatorioEnemigo(){
+function ataqueAleatorioEnemigo() {
     let ataqueAleatorio = numeroRandom(1, 3);
-
-    if (ataqueAleatorio == 1) {
-        ataqueEnemigo = "Punio";
-    } else if (ataqueAleatorio == 2) {
+    if (ataqueAleatorio === 1) {
+        ataqueEnemigo = "Puño";
+    } else if (ataqueAleatorio === 2) {
         ataqueEnemigo = "Patada";
     } else {
         ataqueEnemigo = "Barrida";
     }
-
-    alert(`El enemigo ataco con ${ataqueEnemigo}`);
 }
 
-function ataquePunio(){
-    ataqueJugador = "Punio";
-    alert(ataqueJugador);
+function combatir() {
+    let mensaje = '';
+    if (ataqueJugador === ataqueEnemigo) {
+        mensaje = '¡Empate! Ambos atacaron con ' + ataqueJugador;
+    } else if (
+        (ataqueJugador === 'Puño' && ataqueEnemigo === 'Barrida') ||
+        (ataqueJugador === 'Patada' && ataqueEnemigo === 'Puño') ||
+        (ataqueJugador === 'Barrida' && ataqueEnemigo === 'Patada')
+    ) {
+        vidasEnemigo--;
+        mensaje = `¡Ganaste! Tu ${ataqueJugador} venció al ${ataqueEnemigo} del enemigo.`;
+    } else {
+        vidasJugador--;
+        mensaje = `¡Perdiste! El ${ataqueEnemigo} del enemigo venció a tu ${ataqueJugador}.`;
+    }
+
+    // Actualizar el mensaje en el DOM
+    document.getElementById('mensajes').innerHTML = `<p>${mensaje}</p>`;
+    document.getElementById('vidas-jugador').innerHTML = vidasJugador;
+    document.getElementById('vidas-enemigo').innerHTML = vidasEnemigo;
+
+    // Actualizar las vidas del jugador y del enemigo
+    if (vidasJugador <= 0 || vidasEnemigo <= 0) {
+        let resultadoFinal = vidasJugador <= 0 ? '¡Perdiste el juego!' : '¡Ganaste el juego!';
+        document.getElementById('mensajes').innerHTML = `<p>${resultadoFinal}</p>`;
+        deshabilitarBotonesAtaque();
+    }
+}
+
+function ataquePunio() {
+    ataqueJugador = "Puño";
     ataqueAleatorioEnemigo();
+    combatir();
 }
 
-function ataquePatada(){
+function ataquePatada() {
     ataqueJugador = "Patada";
-    alert(ataqueJugador);
     ataqueAleatorioEnemigo();
+    combatir();
 }
 
-function ataqueBarrida(){
+function ataqueBarrida() {
     ataqueJugador = "Barrida";
-    alert(ataqueJugador);
     ataqueAleatorioEnemigo();
+    combatir();
+}
+
+function deshabilitarBotonesAtaque() {
+    document.getElementById('boton-punio').disabled = true;
+    document.getElementById('boton-patada').disabled = true;
+    document.getElementById('boton-barrida').disabled = true;
+}
+
+function reiniciarJuego() {
+    location.reload();
+    vidasJugador = 3;
+    vidasEnemigo = 3;
+    document.getElementById('personaje-jugador').innerHTML = '';
+    document.getElementById('personaje-enemigo').innerHTML = '';
+    document.getElementById('vidas-jugador').innerHTML = '3';
+    document.getElementById('vidas-enemigo').innerHTML = '3';
+    document.getElementById('mensajes').innerHTML = '';
+    document.querySelectorAll('input[name="personaje"]').forEach(input => input.checked = false);
+    document.getElementById('boton-personaje').disabled = false;
+    document.getElementById('boton-jugar').disabled = false;
+    deshabilitarBotonesAtaque();
 }
 
 function numeroRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
-window.addEventListener('load', iniciarJuego)
+
+window.addEventListener('load', iniciarJuego);
