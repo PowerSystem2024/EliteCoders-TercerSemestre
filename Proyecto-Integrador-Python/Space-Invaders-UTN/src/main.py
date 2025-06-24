@@ -9,8 +9,9 @@ from core.game import Game      # Importa la clase principal del juego
 from core.hub import show_hub  # Importa la función del HUB
 
 def main():
-    # Inicializa todos los módulos de Pygame
     pygame.init()
+    pygame.mixer.init(frequency=44100, size=-16, channels=2, buffer=512)  # Parámetros opcionales
+    # ... resto del código
 
     # Crea la ventana del juego con tamaño definido en settings.py
     screen = pygame.display.set_mode((WIDTH, HEIGHT))

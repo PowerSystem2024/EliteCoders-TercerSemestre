@@ -19,8 +19,8 @@ def show_hub(screen):
         # Highlight selected option
         play_color = (255, 255, 0) if selected == 0 else WHITE
         quit_color = (255, 255, 0) if selected == 1 else WHITE
-        play_render = font_option.render("Play", True, play_color)
-        quit_render = font_option.render("Quit", True, quit_color)
+        play_render = font_option.render("Jugar", True, play_color)
+        quit_render = font_option.render("Salir", True, quit_color)
         
         screen.blit(play_render, (WIDTH // 2 - play_render.get_width() // 2, 250))
         screen.blit(quit_render, (WIDTH // 2 - quit_render.get_width() // 2, 320))
