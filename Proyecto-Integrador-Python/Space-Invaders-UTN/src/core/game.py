@@ -1,5 +1,3 @@
-# src/core/game.py
-
 import pygame
 import time
 
@@ -59,11 +57,12 @@ class Game:
         # Actualiza al jugador con las teclas presionadas
         self.player.update(keys)
 
-        # Shooting logic
+        # Shooting logic - MODIFICADO PARA USAR EL MÉTODO shoot()
         if keys[pygame.K_SPACE] and self.player.can_shoot():
-            bullet = Bullet(self.player.rect.centerx, self.player.rect.top, -1, self.bullet_image, speed=8, from_player=True)
-            self.bullets.append(bullet)
-            self.player.reset_shoot_cooldown()
+            if self.player.shoot():  # Esto reproducirá el sonido y devuelve True si disparó
+                bullet = Bullet(self.player.rect.centerx, self.player.rect.top, -1,
+                              self.bullet_image, speed=7, from_player=True)
+                self.bullets.append(bullet)
 
         # Actualiza cada enemigo
         for enemy in self.enemies[:]:
