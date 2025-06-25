@@ -6,6 +6,7 @@ from src.entities.bullet import Bullet
 from src.entities.enemy import Enemy
 from src.entities.player import Player
 from src.systems.inventory import Inventory
+from src.systems.progress import Progress
 
 class Game:
     def __init__(self, screen):
@@ -32,6 +33,8 @@ class Game:
 
         self.level_up_time = 0
         self.show_level_up = False
+
+        self.progress = Progress()
 
     def load_level(self, level):
         """
@@ -140,6 +143,10 @@ class Game:
         # (Aquí se pueden agregar más colisiones: balas enemigas, jugador, etc.)
 
     def reset_game(self):
+        # Update max score if needed
+        max_score = self.progress.get_max_score()
+        if self.score > max_score:
+            self.progress.set_max_score(self.score)
         self.level = 1
         self.score = 0
         self.lives = 3

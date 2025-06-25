@@ -1,13 +1,20 @@
 import pygame
 from src.settings import WIDTH, HEIGHT, WHITE, BLACK
+from src.systems.progress import Progress
 
 def show_hub(screen):
     font_title = pygame.font.SysFont("Arial", 48)
     font_option = pygame.font.SysFont("Arial", 36)
+    font_score = pygame.font.SysFont("Arial", 28)
     
     title = font_title.render("Space Invaders - UTN", True, WHITE)
     play_text = font_option.render("Jugar", True, WHITE)
     quit_text = font_option.render("Salir", True, WHITE)
+
+    # Load max score
+    progress = Progress()
+    max_score = progress.get_max_score()
+    max_score_text = font_score.render(f"Max Score: {max_score}", True, WHITE)
 
     selected = 0  # 0: Play, 1: Quit
     clock = pygame.time.Clock()
@@ -15,6 +22,7 @@ def show_hub(screen):
     while True:
         screen.fill(BLACK)
         screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 120))
+        screen.blit(max_score_text, (WIDTH // 2 - max_score_text.get_width() // 2, 190))
         
         # Highlight selected option
         play_color = (255, 255, 0) if selected == 0 else WHITE
