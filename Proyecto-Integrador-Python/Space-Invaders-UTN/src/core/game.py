@@ -6,10 +6,9 @@ from entities.bullet import Bullet
 from entities.enemy import Enemy
 from entities.player import Player
 from systems.inventory import Inventory
-from systems.progress import Progress
 
 class Game:
-    def __init__(self, screen):
+    def __init__(self, screen, progress):
         # Guarda la pantalla para dibujar luego
         self.screen = screen
 
@@ -17,7 +16,7 @@ class Game:
         self.level = 1          # Nivel actual
         self.score = 0          # Puntaje del jugador
         self.lives = 3          # Cantidad de vidas
-        self.player = Player()  # Instancia del jugador
+        self.player = Player(self.screen)  # Instancia del jugador
 
         # Carga enemigos iniciales según el nivel
         self.enemies = self.load_level(self.level)
@@ -38,7 +37,9 @@ class Game:
         self.level_up_time = 0
         self.show_level_up = False
 
-        self.progress = Progress()
+        self.progress = progress
+        self.last_score = 0  # Nuevo: para guardar el último score antes de reset
+        self.is_game_over = False
 
     def load_level(self, level):
         """
@@ -85,7 +86,8 @@ class Game:
                 self.lives -= 1
                 self.enemies.remove(enemy)
                 if self.lives <= 0:
-                    self.reset_game()
+                    self.is_game_over = True
+                    return
 
         # Actualiza cada disparo
         for bullet in self.bullets[:]:
@@ -161,13 +163,15 @@ class Game:
                     
                     # Check if player is dead
                     if self.lives <= 0:
-                        self.reset_game()
+                        self.is_game_over = True
+                        return
 
     def reset_game(self):
         # Update max score if needed
         max_score = self.progress.get_max_score()
         if self.score > max_score:
             self.progress.set_max_score(self.score)
+        self.last_score = self.score  # Guardar el score antes de resetear
         self.level = 1
         self.score = 0
         self.lives = 3
