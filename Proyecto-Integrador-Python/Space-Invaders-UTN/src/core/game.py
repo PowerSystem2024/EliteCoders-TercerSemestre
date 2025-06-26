@@ -16,7 +16,7 @@ class Game:
         self.level = 1          # Nivel actual
         self.score = 0          # Puntaje del jugador
         self.lives = 3          # Cantidad de vidas
-        self.player = Player()  # Instancia del jugador
+        self.player = Player(self.screen)  # Instancia del jugador
 
         # Carga enemigos iniciales según el nivel
         self.enemies = self.load_level(self.level)
