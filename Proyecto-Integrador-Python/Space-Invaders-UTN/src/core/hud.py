@@ -1,21 +1,23 @@
 import pygame
-from src.settings import WIDTH, HEIGHT, WHITE, BLACK
-from src.systems.progress import Progress
+from settings import WIDTH, WHITE, BLACK
+from systems.progress import Progress
 
 def draw_hud(screen, score, lives, level):
+    font_name = "Courier"
     # Fuente predeterminada del sistema
-    font = pygame.font.SysFont("Arial", 24)
-    
+    font = pygame.font.SysFont(font_name, 24, bold=True)
+
     # Texto a mostrar con score, vidas y nivel
     text = font.render(f"Score: {score}  Lives: {lives}  Level: {level}", True, (255, 255, 255))
-    
+
     # Dibuja el texto en la esquina superior izquierda
     screen.blit(text, (10, 10))
 
 def show_hub(screen):
-    font_title = pygame.font.SysFont("Arial", 48)
-    font_option = pygame.font.SysFont("Arial", 36)
-    font_score = pygame.font.SysFont("Arial", 28)
+    font_name = "Courier"
+    font_title = pygame.font.SysFont(font_name, 48, bold=True)
+    font_option = pygame.font.SysFont(font_name, 36, bold=True)
+    font_score = pygame.font.SysFont(font_name, 28)
     
     title = font_title.render("Space Invaders - UTN", True, WHITE)
     play_text = font_option.render("Jugar", True, WHITE)

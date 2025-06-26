@@ -1,6 +1,7 @@
 import pygame
 import os
-from src.entities.bullet import Bullet
+import random
+from entities.bullet import Bullet
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y, speed=2, health=4):
@@ -22,6 +23,11 @@ class Enemy(pygame.sprite.Sprite):
         self.max_health = health
         self.direction = 1  # 1: derecha, -1: izquierda
         self.bounce_count = 0  # Cuenta los rebotes para saltos crecientes
+
+        # Shooting mechanics
+        self.shoot_cooldown = 0
+        self.shoot_delay = random.randint(60, 180)  # Random delay between 1-3 seconds at 60 FPS
+        self.shoot_chance = 0.005  # 0.5% chance per frame to shoot
 
         self.update_tint()
 
@@ -60,6 +66,21 @@ class Enemy(pygame.sprite.Sprite):
             self.bounce_count += 1
             self.rect.y += 10 + 3 * self.bounce_count  # Salto más grande cada vez
 
+        # Update shooting cooldown
+        if self.shoot_cooldown > 0:
+            self.shoot_cooldown -= 1
+
+    def can_shoot(self):
+        """Check if enemy can shoot (cooldown finished and random chance)"""
+        return self.shoot_cooldown == 0 and random.random() < self.shoot_chance
+
+    def shoot(self, bullet_image):
+        """Create and return an enemy bullet"""
+        if self.can_shoot():
+            self.shoot_cooldown = self.shoot_delay
+            return Bullet(self.rect.centerx, self.rect.bottom, 1, bullet_image, speed=4, from_player=False)
+        return None
+
     def draw(self, screen):
         # Dibujar imagen en la posición actual
         screen.blit(self.image, self.rect)
@@ -84,8 +105,3 @@ class Enemy(pygame.sprite.Sprite):
                 fallback_sound.play()
 
             self.kill()  # Ahora eliminamos al enemigo después del sonido
-
-    def shoot(self, bullet_group, bullet_image):
-        # El enemigo dispara una bala hacia abajo
-        bullet = Bullet(self.rect.centerx, self.rect.bottom, 1, bullet_image, from_player=False)
-        bullet_group.add(bullet)
