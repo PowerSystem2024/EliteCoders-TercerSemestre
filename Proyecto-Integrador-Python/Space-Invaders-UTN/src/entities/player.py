@@ -22,7 +22,8 @@ class Player:
         health (int): Salud actual del jugador.
     """
 
-    def __init__(self, position=(400, 550), size=PLAYER_SIZE, speed=PLAYER_SPEED, max_health=MAX_HEALTH):
+    def __init__(self, screen, position=(400, 550), size=PLAYER_SIZE, speed=PLAYER_SPEED, max_health=MAX_HEALTH):
+        self.screen = screen
         """
         Inicializa el jugador con imagen, sonido, posición, velocidad y salud.
 
@@ -35,10 +36,18 @@ class Player:
         base_path = os.path.dirname(__file__)
 
         # Cargar imagen
-        img_path = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'images', 'player.png'))
+        img_path = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'images', 'player4.png'))
         self.image = pygame.image.load(img_path).convert_alpha()
         self.image = pygame.transform.scale(self.image, size)
         self.rect = self.image.get_rect(midbottom=position)
+        explosion_folder = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'images'))
+        self.explosion_images = [
+            pygame.transform.scale(
+                pygame.image.load(os.path.join(explosion_folder, f'explo{i}.png')).convert_alpha(),
+                PLAYER_SIZE
+            )
+            for i in range(1, 7)  # 6 imagenes
+        ]
 
         # Cargar sonido
         sound_path = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'sounds', 'shoot.wav'))
@@ -116,6 +125,10 @@ class Player:
         self.health -= amount
         if self.health <= 0:
             self.health = 0
+            for img in self.explosion_images:
+                self.screen.blit(img, self.rect.topleft)
+                pygame.display.flip()
+                pygame.time.delay(200)  # Tiempo entre frames  # 100 milisegundos entre frames
             self.on_death()
 
     def on_death(self):
