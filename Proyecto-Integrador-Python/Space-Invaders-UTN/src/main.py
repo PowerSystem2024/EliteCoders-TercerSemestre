@@ -3,7 +3,7 @@ import os
 import pygame
 from settings import *           # Importa constantes de configuración (pantalla, FPS, etc.)
 from core.game import Game       # Importa la clase principal del juego
-from core.hub import show_hub    # Importa la función del HUB
+from core.hud import show_hub    # Importa la función del HUB
 
 def add_project_root_to_path():
     """
