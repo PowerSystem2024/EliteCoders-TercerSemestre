@@ -3,7 +3,8 @@ import os
 import pygame
 from settings import *           # Importa constantes de configuración (pantalla, FPS, etc.)
 from core.game import Game       # Importa la clase principal del juego
-from core.hud import show_hub    # Importa la función del HUB
+from core.hud import show_hub, show_game_over, show_scores_menu, show_main_menu
+from systems.progress import Progress
 
 def add_project_root_to_path():
     """
@@ -41,6 +42,9 @@ def run_game_loop(game, clock):
         game.update()
         game.draw()
         pygame.display.flip()
+        if game.is_game_over:
+            running = False
+    return game.last_score if game.last_score != 0 else game.score
 
 def main():
     """
@@ -53,21 +57,35 @@ def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Space Invaders - UTN")
 
+    # Instanciar Progress una sola vez
+    progress = Progress()
+
     # Mostrar HUB antes de iniciar el juego (pantalla de inicio con opciones)
-    if not show_hub(screen):
-        pygame.quit()
-        return
-
-    # Reloj para controlar los FPS
     clock = pygame.time.Clock()
+    while True:
+        menu_option = show_main_menu(screen)
+        if menu_option == 0:  # Jugar
+            start, player_name = show_hub(screen, progress)
+            if not start:
+                continue
+            game = Game(screen, progress)
+            final_score = run_game_loop(game, clock)
+            if player_name:
+                progress.save_score(player_name, final_score)
+            show_game_over(screen, final_score)
+            play_again = show_scores_menu(screen, progress)
+            if play_again:
+                continue  # vuelve a pedir nombre y jugar
+            else:
+                continue  # vuelve al menú principal
+        elif menu_option == 1:  # Tabla de posiciones
+            show_scores_menu(screen, progress)
+            continue
+        else:  # Salir
+            break
 
-    # Instancia el juego principal
-    game = Game(screen)
-
-    # Ejecuta el loop principal del juego
-    run_game_loop(game, clock)
-
-    # Finaliza correctamente Pygame al salir
+    # Cerrar conexión de Progress
+    progress.conn.close()
     pygame.quit()
 
 # Llama a main solo si este archivo se ejecuta directamente
