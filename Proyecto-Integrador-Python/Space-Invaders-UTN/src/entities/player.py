@@ -134,9 +134,9 @@ class Player:
 
         # Barra de salud
         bar_width = self.rect.width
-        bar_height = 10
+        bar_height = 5
         bar_x = self.rect.x
-        bar_y = self.rect.y - 15
+        bar_y = self.rect.y + 70
         fill = (self.health / self.max_health) * bar_width
 
         # Fondo rojo
