@@ -1,58 +1,170 @@
 import pygame
-from src.settings import WIDTH, HEIGHT, WHITE, BLACK
-from src.systems.progress import Progress
+from settings import WIDTH, WHITE, BLACK
+from systems.progress import Progress
 
 def draw_hud(screen, score, lives, level):
+    font_name = "Courier"
     # Fuente predeterminada del sistema
-    font = pygame.font.SysFont("Arial", 24)
-    
+    font = pygame.font.SysFont(font_name, 24, bold=True)
+
     # Texto a mostrar con score, vidas y nivel
-    text = font.render(f"Score: {score}  Lives: {lives}  Level: {level}", True, (255, 255, 255))
-    
+    text = font.render(f"Score: {score}   Vidas: {lives}   Nivel: {level}", True, WHITE)
+
     # Dibuja el texto en la esquina superior izquierda
     screen.blit(text, (10, 10))
 
-def show_hub(screen):
-    font_title = pygame.font.SysFont("Arial", 48)
-    font_option = pygame.font.SysFont("Arial", 36)
-    font_score = pygame.font.SysFont("Arial", 28)
+def draw_score_table(screen, scores):
+    font = pygame.font.SysFont("Courier", 28, bold=True)
+    title = font.render("TOP 5 SCORES", True, (255, 255, 0))
+    screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 120))
+    y = 170
+    for idx, entry in enumerate(scores):
+        text = font.render(f"{idx+1:2d}. {entry['name'][:10]:10s}  {entry['score']:5d}", True, (255,255,255))
+        screen.blit(text, (WIDTH // 2 - 180, y))
+        y += 32
+
+def show_hub(screen, progress):
+    font_name = "Courier"
+    font_title = pygame.font.SysFont(font_name, 48, bold=True)
+    font_option = pygame.font.SysFont(font_name, 36, bold=True)
+    font_score = pygame.font.SysFont(font_name, 28)
     
     title = font_title.render("Space Invaders - UTN", True, WHITE)
-    play_text = font_option.render("Jugar", True, WHITE)
-    quit_text = font_option.render("Salir", True, WHITE)
-
-    # Load max score
-    progress = Progress()
-    max_score = progress.get_max_score()
-    max_score_text = font_score.render(f"Max Score: {max_score}", True, WHITE)
-
-    selected = 0  # 0: Play, 1: Quit
-    clock = pygame.time.Clock()
+    start = font_option.render("Presiona ENTER para jugar", True, WHITE)
     
+    # Cargar y mostrar tabla de scores
+    scores = progress.load_scores(limit=5)
+    
+    input_active = True
+    name = ""
+    input_font = pygame.font.SysFont(font_name, 32, bold=True)
+    input_rect = pygame.Rect(WIDTH//2-160, 420, 320, 40)
+    color = pygame.Color('white')
+    
+    clock = pygame.time.Clock()
+    cursor_blink = True
+    cursor_timer = 0
+    cursor_interval = 400  # ms para el cursor
+    # Calcular el máximo de caracteres que caben en el input
+    max_input_width = input_rect.w - 30  # margen para 'Nombre: ' y el cursor
+    max_chars = 20  # valor inicial alto
+    for i in range(1, 30):
+        test_str = 'W' * i
+        test_surface = input_font.render(f"Nombre: {test_str}|", True, color)
+        if test_surface.get_width() > max_input_width:
+            max_chars = i - 1
+            break
     while True:
         screen.fill(BLACK)
-        screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 120))
-        screen.blit(max_score_text, (WIDTH // 2 - max_score_text.get_width() // 2, 190))
-        
-        # Highlight selected option
-        play_color = (255, 255, 0) if selected == 0 else WHITE
-        quit_color = (255, 255, 0) if selected == 1 else WHITE
-        play_render = font_option.render("Jugar", True, play_color)
-        quit_render = font_option.render("Salir", True, quit_color)
-        
-        screen.blit(play_render, (WIDTH // 2 - play_render.get_width() // 2, 250))
-        screen.blit(quit_render, (WIDTH // 2 - quit_render.get_width() // 2, 320))
-        
+        screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 40))
+        draw_score_table(screen, scores)
+        # Input box (arriba del texto de enter)
+        display_name = name
+        # Cursor parpadeante
+        if input_active and cursor_blink:
+            display_name += "|"
+        txt_surface = input_font.render(f"Nombre: {display_name}", True, color)
+        screen.blit(txt_surface, (input_rect.x+5, input_rect.y+5))
+        pygame.draw.rect(screen, color, input_rect, 2)
+        # Texto SIEMPRE visible
+        screen.blit(start, (WIDTH // 2 - start.get_width() // 2, 480))
         pygame.display.flip()
+        # Blink logic para el cursor
+        cursor_timer += clock.get_time()
+        if cursor_timer >= cursor_interval:
+            cursor_blink = not cursor_blink
+            cursor_timer = 0
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False, None
+            if event.type == pygame.KEYDOWN:
+                if input_active:
+                    if event.key == pygame.K_RETURN:
+                        if name.strip():
+                            return True, name.strip()[:max_chars]
+                    elif event.key == pygame.K_BACKSPACE:
+                        name = name[:-1]
+                    elif len(name) < max_chars and event.unicode.isprintable():
+                        # Solo agregar si no se excede el ancho
+                        test_surface = input_font.render(f"Nombre: {name + event.unicode}|", True, color)
+                        if test_surface.get_width() <= max_input_width:
+                            name += event.unicode
         clock.tick(30)
 
+def show_game_over(screen, score):
+    font_name = "Courier"
+    font_title = pygame.font.SysFont(font_name, 64, bold=True)
+    font_score = pygame.font.SysFont(font_name, 36, bold=True)
+    font_msg = pygame.font.SysFont(font_name, 28)
+    
+    title = font_title.render("GAME OVER", True, (255, 0, 0))
+    score_text = font_score.render(f"Tu puntaje: {score}", True, (255, 255, 0))
+    msg = font_msg.render("Presiona ENTER para volver al menú", True, (255, 255, 255))
+    
+    clock = pygame.time.Clock()
+    waiting = True
+    while waiting:
+        screen.fill((0, 0, 0))
+        screen.blit(title, (screen.get_width() // 2 - title.get_width() // 2, 180))
+        screen.blit(score_text, (screen.get_width() // 2 - score_text.get_width() // 2, 280))
+        screen.blit(msg, (screen.get_width() // 2 - msg.get_width() // 2, 380))
+        pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
-            elif event.type == pygame.KEYDOWN:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    return True
+        clock.tick(30)
+
+def show_scores_menu(screen, progress):
+    font_name = "Courier"
+    font_title = pygame.font.SysFont(font_name, 48, bold=True)
+    font_option = pygame.font.SysFont(font_name, 36, bold=True)
+    
+    title = font_title.render("Tabla de Puntajes", True, (255, 255, 0))
+    volver_render = font_option.render("Volver", True, (255, 255, 0))
+    clock = pygame.time.Clock()
+    scores = progress.load_scores(limit=5)
+    while True:
+        screen.fill((0, 0, 0))
+        screen.blit(title, (screen.get_width() // 2 - title.get_width() // 2, 40))
+        draw_score_table(screen, scores)
+        screen.blit(volver_render, (screen.get_width() // 2 - volver_render.get_width() // 2, 480))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return False
+            if event.type == pygame.KEYDOWN:
+                if event.key in [pygame.K_RETURN, pygame.K_ESCAPE, pygame.K_SPACE]:
+                    return False  # Volver al menú principal
+        clock.tick(30)
+
+def show_main_menu(screen):
+    font_name = "Courier"
+    font_title = pygame.font.SysFont(font_name, 48, bold=True)
+    font_option = pygame.font.SysFont(font_name, 36, bold=True)
+    
+    title = font_title.render("Space Invaders - UTN", True, (255, 255, 0))
+    options = ["Jugar", "Tabla de posiciones", "Salir"]
+    selected = 0
+    clock = pygame.time.Clock()
+    while True:
+        screen.fill((0, 0, 0))
+        screen.blit(title, (screen.get_width() // 2 - title.get_width() // 2, 80))
+        for i, opt in enumerate(options):
+            color = (255, 255, 0) if i == selected else (255, 255, 255)
+            opt_render = font_option.render(opt, True, color)
+            screen.blit(opt_render, (screen.get_width() // 2 - opt_render.get_width() // 2, 220 + i * 70))
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return 2  # Salir
+            if event.type == pygame.KEYDOWN:
                 if event.key in [pygame.K_UP, pygame.K_w]:
-                    selected = (selected - 1) % 2
+                    selected = (selected - 1) % 3
                 elif event.key in [pygame.K_DOWN, pygame.K_s]:
-                    selected = (selected + 1) % 2
+                    selected = (selected + 1) % 3
                 elif event.key in [pygame.K_RETURN, pygame.K_SPACE]:
-                    return selected == 0  # True if Play, False if Quit
+                    return selected
+        clock.tick(30)

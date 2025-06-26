@@ -9,7 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9d0e4a45-54a2-490f-924b-784d23a7bda7" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/core/hud.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/game.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/game.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/core/hud.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/core/hud.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/systems/progress.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/systems/progress.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +46,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;franco-moyano&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/asan/tup/EliteCoders-TercerSemestre/Proyecto-Integrador-Python/Space-Invaders-UTN&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Darwoft/Documents/Facultad/EliteCoders-TercerSemestre/Proyecto-Integrador-Python/Space-Invaders-UTN/src/data&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -55,6 +58,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Darwoft\Documents\Facultad\EliteCoders-TercerSemestre\Proyecto-Integrador-Python\Space-Invaders-UTN\src\data" />
       <recent name="C:\Users\Darwoft\Documents\Facultad\EliteCoders-TercerSemestre\Proyecto-Integrador-Python\Space-Invaders-UTN\assets\sounds" />
       <recent name="C:\Users\Darwoft\Documents\Facultad\EliteCoders-TercerSemestre\Proyecto-Integrador-Python\Space-Invaders-UTN\assets\images" />
     </key>
@@ -132,7 +136,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Space_Invaders_UTN$main.coverage" NAME="main Coverage Results" MODIFIED="1750900161565" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Space_Invaders_UTN$main.coverage" NAME="main Coverage Results" MODIFIED="1750908279524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Space_Invaders_UTN$player.coverage" NAME="player Coverage Results" MODIFIED="1750447881911" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/entities" />
     <SUITE FILE_PATH="coverage/Space_Invaders_UTN$game.coverage" NAME="game Coverage Results" MODIFIED="1750446950074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/core" />
   </component>

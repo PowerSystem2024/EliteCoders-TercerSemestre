@@ -1,9 +1,14 @@
 import sqlite3  # Módulo estándar para bases de datos SQLite
+import json
+import os
 
 class Progress:
     def __init__(self, db_path='data/game_data.db'):  # Ruta a la base
         self.conn = sqlite3.connect(db_path)
         self.create_table()
+        # Para scores tipo ranking
+        self.scores_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../data'))
+        self.scores_file = os.path.join(self.scores_dir, 'scores.json')
 
     def create_table(self):
         self.conn.execute('''
@@ -18,6 +23,14 @@ class Progress:
             CREATE TABLE IF NOT EXISTS max_score (
                 id INTEGER PRIMARY KEY CHECK (id = 1),
                 score INTEGER DEFAULT 0
+            )
+        ''')
+        # Nueva tabla para scores tipo ranking
+        self.conn.execute('''
+            CREATE TABLE IF NOT EXISTS scores (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                score INTEGER NOT NULL
             )
         ''')
         self.conn.commit()
@@ -53,3 +66,18 @@ class Progress:
             ON CONFLICT(id) DO UPDATE SET score=excluded.score
         ''', (score,))
         self.conn.commit()
+
+    # --- SCOREBOARD tipo ranking en SQLite ---
+    def save_score(self, name, score):
+        self.conn.execute('''
+            INSERT INTO scores (name, score) VALUES (?, ?)
+        ''', (name, score))
+        self.conn.commit()
+
+    def load_scores(self, limit=5):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            SELECT name, score FROM scores ORDER BY score DESC, id ASC LIMIT ?
+        ''', (limit,))
+        rows = cursor.fetchall()
+        return [{'name': row[0], 'score': row[1]} for row in rows]

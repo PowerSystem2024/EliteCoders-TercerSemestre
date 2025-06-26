@@ -1,15 +1,14 @@
 import pygame
 import time
 
-from src.core.hud import draw_hud
-from src.entities.bullet import Bullet
-from src.entities.enemy import Enemy
-from src.entities.player import Player
-from src.systems.inventory import Inventory
-from src.systems.progress import Progress
+from core.hud import draw_hud
+from entities.bullet import Bullet
+from entities.enemy import Enemy
+from entities.player import Player
+from systems.inventory import Inventory
 
 class Game:
-    def __init__(self, screen):
+    def __init__(self, screen, progress):
         # Guarda la pantalla para dibujar luego
         self.screen = screen
 
@@ -31,10 +30,16 @@ class Game:
         self.bullet_image = pygame.Surface((10, 20))
         self.bullet_image.fill((255, 255, 0))  # Yellow bullet
 
+        # Enemy bullet image (red for enemy bullets)
+        self.enemy_bullet_image = pygame.Surface((8, 16))
+        self.enemy_bullet_image.fill((255, 0, 0))  # Red bullet
+
         self.level_up_time = 0
         self.show_level_up = False
 
-        self.progress = Progress()
+        self.progress = progress
+        self.last_score = 0  # Nuevo: para guardar el último score antes de reset
+        self.is_game_over = False
 
     def load_level(self, level):
         """
@@ -67,19 +72,29 @@ class Game:
                               self.bullet_image, speed=7, from_player=True)
                 self.bullets.append(bullet)
 
-        # Actualiza cada enemigo
+        # Actualiza cada enemigo y maneja sus disparos
         for enemy in self.enemies[:]:
             enemy.update()
+            
+            # Enemy shooting logic
+            enemy_bullet = enemy.shoot(self.enemy_bullet_image)
+            if enemy_bullet:
+                self.bullets.append(enemy_bullet)
+            
             # Si el enemigo llega al fondo, reduce vidas
             if enemy.rect.bottom >= 600:
                 self.lives -= 1
                 self.enemies.remove(enemy)
                 if self.lives <= 0:
-                    self.reset_game()
+                    self.is_game_over = True
+                    return
 
         # Actualiza cada disparo
-        for bullet in self.bullets:
+        for bullet in self.bullets[:]:
             bullet.update()
+            # Remove bullets that are off screen
+            if bullet.rect.bottom < 0 or bullet.rect.top > 600:
+                self.bullets.remove(bullet)
 
         # Controla colisiones entre objetos
         self.handle_collisions()
@@ -127,7 +142,6 @@ class Game:
     def handle_collisions(self):
         """
         Detecta y maneja colisiones entre disparos y enemigos o jugador.
-        Esta función se completará más adelante.
         """
         # Colisiones entre balas del jugador y enemigos
         for bullet in self.bullets[:]:
@@ -140,17 +154,29 @@ class Game:
                             self.enemies.remove(enemy)
                         self.bullets.remove(bullet)
                         break
-        # (Aquí se pueden agregar más colisiones: balas enemigas, jugador, etc.)
+            else:
+                # Enemy bullet collision with player
+                if bullet.rect.colliderect(self.player.rect):
+                    self.player.take_damage(1)  # Reduce player health by 1
+                    self.lives -= 1  # Reduce player lives by 1
+                    self.bullets.remove(bullet)
+                    
+                    # Check if player is dead
+                    if self.lives <= 0:
+                        self.is_game_over = True
+                        return
 
     def reset_game(self):
         # Update max score if needed
         max_score = self.progress.get_max_score()
         if self.score > max_score:
             self.progress.set_max_score(self.score)
+        self.last_score = self.score  # Guardar el score antes de resetear
         self.level = 1
         self.score = 0
         self.lives = 3
         self.enemies = self.load_level(self.level)
         self.player.rect.x = 300
+        self.player.health = self.player.max_health  # Reset player health
         self.bullets.clear()
         self.show_level_up = False
