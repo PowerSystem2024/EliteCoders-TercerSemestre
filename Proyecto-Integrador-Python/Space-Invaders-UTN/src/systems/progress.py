@@ -33,6 +33,12 @@ class Progress:
                 score INTEGER NOT NULL
             )
         ''')
+        self.conn.execute('''
+        CREATE TABLE IF NOT EXISTS player_settings (
+            id INTEGER PRIMARY KEY,
+            selected_skin TEXT DEFAULT "player0.png"
+        )
+        ''')
         self.conn.commit()
 
     def save_progress(self, player_id, level, score, lives):  # Guardar datos
@@ -81,3 +87,18 @@ class Progress:
         ''', (limit,))
         rows = cursor.fetchall()
         return [{'name': row[0], 'score': row[1]} for row in rows]
+    def save_selected_skin(self, skin_name):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            INSERT OR REPLACE INTO player_settings (id, selected_skin) 
+            VALUES (1, ?)
+        ''', (skin_name,))
+        self.conn.commit()
+
+    def get_selected_skin(self):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            SELECT selected_skin FROM player_settings WHERE id = 1
+        ''')
+        result = cursor.fetchone()
+        return result[0] if result else "player0.png"

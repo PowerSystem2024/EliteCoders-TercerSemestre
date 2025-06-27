@@ -60,15 +60,19 @@ def main():
     # Instanciar Progress una sola vez
     progress = Progress()
 
+    # Seleccionar skin por defecto
+    current_skin = progress.get_selected_skin() or "player0.png"
+
     # Mostrar HUB antes de iniciar el juego (pantalla de inicio con opciones)
     clock = pygame.time.Clock()
     while True:
-        menu_option = show_main_menu(screen)
+        menu_option = show_main_menu(screen, progress, current_skin)
         if menu_option == 0:  # Jugar
             start, player_name = show_hub(screen, progress)
             if not start:
                 continue
-            game = Game(screen, progress)
+            print(f"skin(main): {current_skin}")
+            game = Game(screen, progress, current_skin)
             final_score = run_game_loop(game, clock)
             if player_name:
                 progress.save_score(player_name, final_score)
