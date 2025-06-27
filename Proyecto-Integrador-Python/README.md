@@ -91,7 +91,9 @@ cd space-invaders
 
 pip install -r requirements.txt
 
-python src/main.py
+cd .\Proyecto-Integrador-Python\Space-Invaders-UTN\src\
+
+python main.py
 ```
 ## 🎮 Instrucciones del Juego
 
