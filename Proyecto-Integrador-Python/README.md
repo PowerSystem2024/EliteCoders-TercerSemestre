@@ -93,3 +93,36 @@ pip install -r requirements.txt
 
 python src/main.py
 ```
+## 🎮 Instrucciones del Juego
+
+### 🔫 Controles Básicos
+| Tecla           | Acción                  |
+|-----------------|-------------------------|
+| `←` o `A`       | Mover nave a la izquierda |
+| `→` o `D`       | Mover nave a la derecha   |
+| `ESPACIO`       | Disparar                 |
+| `ESC`           | Volver al menú           |
+
+### 🎯 Objetivo
+- Destruye oleadas de naves enemigas
+- Sobrevive el mayor tiempo posible
+- Alcanza el top 5 de puntuaciones
+
+### 🛸 Sistema de Skins
+
+#### 🔓 Desbloqueo de Naves
+| Nivel | Skin Desbloqueada |
+|-------|-------------------|
+| 3     | Nave 1         |
+| 6     | Nave 2         |
+| 9     | Nave 3         |
+
+#### ✨ Cómo cambiar tu nave
+1. En el menú principal → "Seleccionar Nave"
+2. Usa `←` `→` para ver las skins disponibles
+3. Presiona `ENTER` para confirmar
+4. ¡Juega con tu nueva nave!
+
+### 🏆 Consejos Pro
+- Dispara a los enemigos desde abajo para mayor precisión
+- Las naves enemigas aceleran cada nivel completado

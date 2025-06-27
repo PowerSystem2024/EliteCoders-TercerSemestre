@@ -1,6 +1,8 @@
+import os
 import pygame
 from settings import WIDTH, WHITE, BLACK
 from systems.progress import Progress
+from systems.inventory import Inventory
 
 def draw_hud(screen, score, lives, level):
     font_name = "Courier"
@@ -76,12 +78,12 @@ def show_hub(screen, progress):
             cursor_timer = 0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False, None
+                return False, None, None
             if event.type == pygame.KEYDOWN:
                 if input_active:
                     if event.key == pygame.K_RETURN:
                         if name.strip():
-                            return True, name.strip()[:max_chars]
+                            return True, name.strip()[:max_chars] 
                     elif event.key == pygame.K_BACKSPACE:
                         name = name[:-1]
                     elif len(name) < max_chars and event.unicode.isprintable():
@@ -140,13 +142,14 @@ def show_scores_menu(screen, progress):
                     return False  # Volver al menú principal
         clock.tick(30)
 
-def show_main_menu(screen):
+def show_main_menu(screen, progress, current_skin):
+    
     font_name = "Courier"
     font_title = pygame.font.SysFont(font_name, 48, bold=True)
     font_option = pygame.font.SysFont(font_name, 36, bold=True)
     
     title = font_title.render("Space Invaders - UTN", True, (255, 255, 0))
-    options = ["Jugar", "Tabla de posiciones", "Salir"]
+    options = ["Jugar","Seleccionar Nave", "Tabla de posiciones", "Salir"]
     selected = 0
     clock = pygame.time.Clock()
     while True:
@@ -159,12 +162,80 @@ def show_main_menu(screen):
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return 2  # Salir
+                return 3  # Salir
             if event.type == pygame.KEYDOWN:
                 if event.key in [pygame.K_UP, pygame.K_w]:
-                    selected = (selected - 1) % 3
+                    selected = (selected - 1) % 4
                 elif event.key in [pygame.K_DOWN, pygame.K_s]:
-                    selected = (selected + 1) % 3
+                    selected = (selected + 1) % 4
                 elif event.key in [pygame.K_RETURN, pygame.K_SPACE]:
-                    return selected
+                    if selected == 1: # Seleccionar Nave
+                        new_skin = show_skin_selector(screen, current_skin)
+                        if new_skin != current_skin: #Solo actualiza si cambio
+                            current_skin = new_skin
+                            progress.save_selected_skin(current_skin)
+                            print(f"Skin seleccionada y guardada(hud): {current_skin}")
+                        return selected
+                    elif selected == 2:
+                        show_scores_menu(screen, progress)
+                        continue
+                    else:
+                        return selected
+        clock.tick(30)
+
+def show_skin_selector(screen, current_skin):
+    font_title = pygame.font.SysFont("Courier", 42, bold=True)
+    font_option = pygame.font.SysFont("Courier", 28)
+
+    inventory = Inventory()
+    unlocked_skins = inventory.get_unlocked_skins()
+    if "player0.png" not in unlocked_skins:
+        unlocked_skins.insert(0, "player0.png")
+
+    selected = 0
+    clock = pygame.time.Clock()
+    while True:
+        screen.fill((0, 0, 0))
+
+        title = font_title.render("Selecciona tu Nave", True, WHITE)
+        screen.blit(title, (WIDTH // 2 - title.get_width() // 2, 40))
+
+        skin_name = unlocked_skins[selected]
+        skin_number = ''.join(filter(str.isdigit, skin_name)) or "0"
+        skin_path = os.path.abspath(os.path.join("..", "assets", "images", skin_name))
+
+        try:
+            skin_img = pygame.image.load(skin_path).convert_alpha()
+        except:
+            skin_img = pygame.Surface((100, 100))
+            skin_img.fill((255, 0, 0))
+
+        skin_img = pygame.transform.scale(skin_img, (120, 120))
+        screen.blit(skin_img, (WIDTH // 2 - 60, 150))
+
+        label = font_option.render(f"Nave {skin_number}", True, WHITE)
+        screen.blit(label, (WIDTH // 2 - label.get_width() // 2, 290))
+
+        instr1 = font_option.render("← → para elegir", True, WHITE)
+        instr2 = font_option.render("ENTER para confirmar", True, WHITE)
+        instr3 = font_option.render("ESC para volver", True, WHITE)
+
+        screen.blit(instr1, (WIDTH // 2 - instr1.get_width() // 2, 370))
+        screen.blit(instr2, (WIDTH // 2 - instr2.get_width() // 2, 410))
+        screen.blit(instr3, (WIDTH // 2 - instr3.get_width() // 2, 450))
+
+        pygame.display.flip()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return current_skin
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    selected = (selected - 1) % len(unlocked_skins)
+                elif event.key == pygame.K_RIGHT:
+                    selected = (selected + 1) % len(unlocked_skins)
+                elif event.key == pygame.K_RETURN: 
+                    return unlocked_skins[selected]
+                elif event.key == pygame.K_ESCAPE:
+                     return current_skin  # Mantener la actual
         clock.tick(30)
