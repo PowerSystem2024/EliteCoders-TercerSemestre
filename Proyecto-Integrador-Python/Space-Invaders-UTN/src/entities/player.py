@@ -1,6 +1,5 @@
 import pygame
 import os
-
 # Constantes para configuración
 SCREEN_WIDTH = 800
 PLAYER_SIZE = (70, 70)
@@ -21,9 +20,12 @@ class Player:
         max_health (int): Salud máxima del jugador.
         health (int): Salud actual del jugador.
     """
+    
 
-    def __init__(self, screen, position=(400, 550), size=PLAYER_SIZE, speed=PLAYER_SPEED, max_health=MAX_HEALTH):
+    def __init__(self, screen, position=(400, 550), size=PLAYER_SIZE, speed=PLAYER_SPEED, max_health=MAX_HEALTH, skin_name="player0.png"):
         self.screen = screen
+        self.skin_name = skin_name if skin_name else "player0.png"
+
         """
         Inicializa el jugador con imagen, sonido, posición, velocidad y salud.
 
@@ -33,22 +35,28 @@ class Player:
             speed (int): Velocidad de movimiento.
             max_health (int): Salud máxima.
         """
-        base_path = os.path.dirname(__file__)
-
-        # Cargar imagen
-        img_path = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'images', 'player4.png'))
-        self.image = pygame.image.load(img_path).convert_alpha()
-        self.image = pygame.transform.scale(self.image, size)
-        self.rect = self.image.get_rect(midbottom=position)
-        explosion_folder = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'images'))
-        self.explosion_images = [
-            pygame.transform.scale(
-                pygame.image.load(os.path.join(explosion_folder, f'explo{i}.png')).convert_alpha(),
-                PLAYER_SIZE
-            )
-            for i in range(1, 7)  # 6 imagenes
-        ]
-
+        
+        try:
+            base_path = os.path.dirname(__file__)
+            # Cargar imagen
+            img_path = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'images', skin_name))
+            self.image = pygame.image.load(img_path).convert_alpha()
+            self.image = pygame.transform.scale(self.image, size)
+            position = (screen.get_width() // 2, screen.get_height() - 20)
+            self.rect = self.image.get_rect(midbottom=position)
+            print(f"Skin cargada exitosamente(player): {skin_name}")
+            explosion_folder = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'images'))
+            self.explosion_images = [
+                pygame.transform.scale(
+                    pygame.image.load(os.path.join(explosion_folder, f'explo{i}.png')).convert_alpha(),
+                    PLAYER_SIZE
+                )
+                for i in range(1, 7)  # 6 imagenes
+            ]
+        except Exception as e:
+            print(f"Error cargando skin (player) {skin_name}: {e}")
+            # Cargar skin por defecto si hay error
+        
         # Cargar sonido
         sound_path = os.path.abspath(os.path.join(base_path, '..', '..', 'assets', 'sounds', 'shoot.wav'))
         try:
@@ -126,9 +134,10 @@ class Player:
         if self.health <= 0:
             self.health = 0
             for img in self.explosion_images:
+                self.screen.fill((0, 0, 0))  # limpia la pantalla
                 self.screen.blit(img, self.rect.topleft)
                 pygame.display.flip()
-                pygame.time.delay(200)  # Tiempo entre frames  # 100 milisegundos entre frames
+                pygame.time.delay(200)  # Tiempo entre frames 
             self.on_death()
 
     def on_death(self):

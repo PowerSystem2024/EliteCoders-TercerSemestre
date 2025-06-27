@@ -8,15 +8,19 @@ from entities.player import Player
 from systems.inventory import Inventory
 
 class Game:
-    def __init__(self, screen, progress):
+    def __init__(self, screen, progress,current_skin):
         # Guarda la pantalla para dibujar luego
         self.screen = screen
+        self.current_skin = current_skin
+        print(f"Skin recibida en Game(game): {current_skin}")
+        self.player = Player(screen, skin_name=current_skin)
+        print(f"Skin del player(game): {self.player.skin_name}")
 
         # Variables del estado general del juego
         self.level = 1          # Nivel actual
         self.score = 0          # Puntaje del jugador
         self.lives = 3          # Cantidad de vidas
-        self.player = Player(self.screen)  # Instancia del jugador
+        
 
         # Carga enemigos iniciales según el nivel
         self.enemies = self.load_level(self.level)
@@ -108,6 +112,12 @@ class Game:
             self.bullets.clear()
             self.show_level_up = True
             self.level_up_time = time.time()
+
+        # Desbloqueo de skin cada 3 niveles (máximo 3)
+        skin_index = self.level // 3
+        if 1 <= skin_index <= 3:
+            skin_name = f"player{skin_index}.png"
+            self.inventory.unlock_skin(skin_name)
         # Hide level up message after 2 seconds
         if self.show_level_up and time.time() - self.level_up_time > 2:
             self.show_level_up = False

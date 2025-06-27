@@ -14,8 +14,9 @@ class Inventory:
         self.conn = sqlite3.connect(db_path)
 
         # Crear tabla si no existe
-        self.create_table()
-    def create_table(self):
+        self.create_table_inventory()
+        self.create_table_skins()
+    def create_table_inventory(self):
         self.conn.execute('''
             CREATE TABLE IF NOT EXISTS inventory (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -55,3 +56,29 @@ class Inventory:
     def clear_inventory(self, player_id):  # Eliminar todos los ítems del jugador
         self.conn.execute('DELETE FROM inventory WHERE player_id=?', (player_id,))
         self.conn.commit()
+
+    def create_table_skins(self):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS skins (
+                id INTEGER PRIMARY KEY,
+                name TEXT UNIQUE,
+                unlocked INTEGER DEFAULT 0
+            )
+        ''')
+        self.conn.commit()
+
+    def unlock_skin(self, name):
+        cursor = self.conn.cursor()
+        cursor.execute('''
+            INSERT OR IGNORE INTO skins (name, unlocked) VALUES (?, 1)
+        ''', (name,))
+        cursor.execute('''
+            UPDATE skins SET unlocked = 1 WHERE name = ?
+        ''', (name,))
+        self.conn.commit()
+
+    def get_unlocked_skins(self):
+        cursor = self.conn.cursor()
+        cursor.execute('SELECT name FROM skins WHERE unlocked = 1')
+        return [row[0] for row in cursor.fetchall()]
