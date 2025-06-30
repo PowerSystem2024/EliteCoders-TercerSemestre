@@ -3,6 +3,8 @@
 Este es un proyecto académico para la materia Programacion 3 en UTN San Rafael.  
 Se trata de una versión simple y personalizada del clásico **Space Invaders**, desarrollado completamente en Python usando la librería **Pygame**.
 
+**VIDEO DEMOSTRACIÓN DEL PROYECTO**: [click aquí 🔗](https://drive.google.com/file/d/1MJLILGkoGaGpMZW0b_3PS-NrMR8TpJsg/view?usp=drive_link)
+
 ---
 
 ## 🎮 Características
